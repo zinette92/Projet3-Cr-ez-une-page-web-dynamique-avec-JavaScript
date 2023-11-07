@@ -186,3 +186,37 @@ footer nav ul {
 	margin: 2em
 }
 
+
+.filters{
+	display: flex;
+	justify-content: center;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+.filters ul{
+	display: flex;
+	list-style-type: none;
+	padding: 0;
+	gap:20px;
+
+}
+
+.filters ul li{
+	width:fit-content;
+	padding: 15px 30px;
+	border:2px #1D6154 solid;
+	color: #1D6154;
+	font-size: 1.4rem;
+	font-weight: bold;
+	border-radius: 60px;
+}
+
+.hide-portolio{
+	display: none;
+}
+
+.filters ul .selected{
+	background-color: #1D6154;
+	color: white;
+}
