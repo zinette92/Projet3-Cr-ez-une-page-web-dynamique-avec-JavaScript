@@ -4,10 +4,21 @@ const portfolio = document.querySelector("#portfolio");
 const filterBtn = document.querySelector(".filters");
 const ul = document.querySelector(".filters ul");
 const allWorks = document.querySelector(".gallery");
-const categoriesName = [];
-const categoriesId = [];
 let selectedFiterId;
 let selectedFilterElement;
+
+
+/**
+ * This function retrieve all categories available.
+ */
+
+async function getDataFilters() {
+    const response = await fetch("http://localhost:5678/api/categories");
+    filtersElements = await response.json();
+     
+    if(filtersElements){generateFilters(filtersElements);}
+    else {portfolio.classList.add("hide-portolio");}
+}
 
 /**
  * This function retrieve all available works.
@@ -15,83 +26,12 @@ let selectedFilterElement;
  * @param {number} filterId All works available according to the chosen filter.
  */
 
-async function getData(filterId) {
+async function getDataWorks(filterId) {
     const response = await fetch("http://localhost:5678/api/works");
     const worksElements = await response.json();
     if (worksElements) { applyFilters(worksElements, filterId); }
-    else { portfolio.classList.add("hide-portolio"); }
+    else {portfolio.classList.add("hide-portolio");} 
 }
-
-/**
-* This function apply the filter selected.
-*
-* @param {number} filterId All works available according to the chosen filter.
-*/
-
-function applyFilters(works, filterId) {
-    if (filterId === 0) {
-        displayWorks(works);
-    }
-    else {
-        const filtered = works.filter( (id) => {
-            return id.categoryId === filterId;
-        });
-        displayWorks(filtered);
-    }
-}
-
-
-
-/**
- * This function displays all available works.
- *
- * @param {json} works All works available according to the chosen filter.
- */
-
-function displayWorks(works) {
-
-    
-    for (let i = 0; i < works.length; i++) {
-
-        const workContainer = document.createElement("figure");
-        const imgWork = document.createElement("img");
-        const imgCaption = document.createElement("figcaption");
-        imgWork.src = works[i].imageUrl;
-        imgWork.alt = works[i].title;
-        imgCaption.innerHTML = works[i].title;
-        if (categoriesName.indexOf(works[i].category.name) === -1) {
-            categoriesName.push(works[i].category.name)
-            categoriesId.push(works[i].category.id)
-        }
-        workContainer.appendChild(imgWork);
-        workContainer.appendChild(imgCaption);
-        gallery.appendChild(workContainer);
-    }
-
-    //We check whether the buttons have already been generated or not
-    if (areFiltersGenerated()) { generateFiltersBtn(categoriesName, categoriesId); }
-}
-
-
-/**
- * This function allows to know if filters was already generated or not.
- *
- * @return {number} return if filters was already generated or not
- */
-
-function areFiltersGenerated() {
-    if (ul.childElementCount === 0) { return 1; }
-    else { return 0; }
-}
-
-/**
- * This function allows to remove visible works.
- */
-
-function removeWorks() {
-    gallery.innerHTML = "";
-}
-
 
 
 /**
@@ -101,20 +41,27 @@ function removeWorks() {
  * @param {table} filtersId The table containing the category id.
  */
 
-function generateFiltersBtn(filtersName, filtersId) {
-    generateAllFilter(filtersName.length);
-    for (i = 0; i < filtersName.length; i++) {
+function generateFilters(nbFilters) {
+    
+    const categoriesName = [];
+    const categoriesId = [];
+    generateAllFilter(nbFilters.length);
+    
+    for (i = 0; i < nbFilters.length; i++) {
         const li = document.createElement("li")
-        li.innerHTML = filtersName[i];
-        li.id = filtersId[i];
-        if (filtersName.length == 1) { selectedFiterId.classList.add("selected"); }
+        categoriesName.push(filtersElements[i].name)
+        categoriesId.push(filtersElements[i].id)
+        li.innerHTML = categoriesName[i];
+        li.id = categoriesId[i];
+        if (nbFilters.length == 1) { selectedFiterId.classList.add("selected"); }
         ul.appendChild(li);
     }
     filterBtn.appendChild(ul);
+    getDataWorks(0);
 }
 
 /**
- * This function generates an "All" filter if more than 2 categories are available.
+ * This function generates an "All" filter if there at least 2 filters available.
  *
  * @param {number} nbFilters The number of available filters.
  */
@@ -130,18 +77,71 @@ function generateAllFilter(nbFilters) {
     }
 }
 
+/**
+* This function apply the filter selected.
+*
+* @param {number} filterId All works available according to the chosen filter.
+*/
+
+function applyFilters(works, filterId) {
+    if (filterId === 0) {
+        displayWorks(works);
+    }
+    else {
+        const filteredWorks = works.filter( (id) => {
+            return id.categoryId === filterId;
+        });
+        displayWorks(filteredWorks);
+    }
+}
+
+
+/**
+ * This function displays all available works.
+ *
+ * @param {json} works All works available according to the chosen filter.
+ */
+
+function displayWorks(works) {
+
+    for (let i = 0; i < works.length; i++) {
+        const workContainer = document.createElement("figure");
+        const imgWork = document.createElement("img");
+        const imgCaption = document.createElement("figcaption");
+        imgWork.src = works[i].imageUrl;
+        imgWork.alt = works[i].title;
+        imgCaption.innerHTML = works[i].title;
+        workContainer.appendChild(imgWork);
+        workContainer.appendChild(imgCaption);
+        gallery.appendChild(workContainer);
+    }
+
+}
+
+
+/**
+ * This function allows to remove visible works.
+ */
+
+function removeWorks() {
+    gallery.innerHTML = "";
+}
+
 
 /**
  * This function adds the "selected" class to the selected filter.
  *
- * @param {HTMLElement} filter The li HTMLElement.
+ * @param {HTMLElement} filter The <li> HTMLElement.
  */
 
 function selectedFilterUpdate(filter) {
-    if (selectedFiterId) { selectedFiterId.classList.remove('selected'); }
-    selectedFiterId = filter;
-    selectedFiterId.classList.add('selected'); 
-    filterWorksUpdate(selectedFiterId.id);
+    if (selectedFiterId && selectedFiterId !== filter) { 
+        selectedFiterId.classList.remove('selected'); 
+        selectedFiterId = filter;
+        selectedFiterId.classList.add('selected'); 
+        filterWorksUpdate(selectedFiterId.id);
+    }
+    
 }
 
 /**
@@ -152,19 +152,20 @@ function selectedFilterUpdate(filter) {
 
 function filterWorksUpdate(filterId) {
     removeWorks();
-    getData(parseInt(filterId));
+    getDataWorks(parseInt(filterId));
 }
 
+
+//Detect click on filters 
+
 ul.addEventListener("click", (event) => {
-    const target = event.target;
-    if (target.id) { selectedFilterUpdate(target); }
+    if (event.target.id) { selectedFilterUpdate(event.target); }
 });
 
 
-//First generation of all works
+//Generation of filters
 
-getData(0);
-
+getDataFilters();
 
 
 
