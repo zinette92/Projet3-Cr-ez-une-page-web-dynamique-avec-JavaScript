@@ -4,137 +4,174 @@ const portfolio = document.querySelector("#portfolio");
 const filterBtn = document.querySelector(".filters");
 const ul = document.querySelector(".filters ul");
 const allWorks = document.querySelector(".gallery");
+const categoriesName = [];
+const categoriesId = [];
 let selectedFiterId;
-let categoriesName = [];
-let categoriesId = [];
+let selectedFilterElement;
 
+/**
+ * This function retrieve all available works.
+ *
+ * @param {number} filterId All works available according to the chosen filter.
+ */
 
-async function getData(filter) {
+async function getData(filterId) {
     const response = await fetch("http://localhost:5678/api/works");
     const worksElements = await response.json();
-    // waits until the request completes...
-    if(worksElements){
-        if(filter !== 0){
-            console.log("hello" + filter);
-            const filtered = worksElements.filter(function(i) {
-                return i.categoryId === filter;
-              }); 
-              console.log(filtered);
-             displayWorks(filtered);
-        }
-        else {
-            displayWorks(worksElements);
-        }
-    }
-    else{
-        portfolio.classList.add("hide-portolio");
-    }
-     
-  }
+    if (worksElements) { applyFilters(worksElements, filterId); }
+    else { portfolio.classList.add("hide-portolio"); }
+}
 
-function displayWorks(works)
-{
-     
-    console.log(works);
+/**
+* This function apply the filter selected.
+*
+* @param {number} filterId All works available according to the chosen filter.
+*/
+
+function applyFilters(works, filterId) {
+    if (filterId === 0) {
+        displayWorks(works);
+    }
+    else {
+        const filtered = works.filter(function (id) {
+            return id.categoryId === filterId;
+        });
+        displayWorks(filtered);
+    }
+}
+
+
+
+/**
+ * This function displays all available works.
+ *
+ * @param {json} works All works available according to the chosen filter.
+ */
+
+function displayWorks(works) {
+
     
-    if(portfolio.classList.contains("hide-portolio")){portfolio.classList.remove("hide-portolio");}
+    for (let i = 0; i < works.length; i++) {
 
-
-        for (let i = 0; i < works.length; i++){
-        
-        let workContainer = document.createElement("figure");
-        let imgWork = document.createElement("img");
-        let imgCaption = document.createElement("figcaption");
+        const workContainer = document.createElement("figure");
+        const imgWork = document.createElement("img");
+        const imgCaption = document.createElement("figcaption");
         imgWork.src = works[i].imageUrl;
         imgWork.alt = works[i].title;
-        if(categoriesName.indexOf(works[i].category.name) === -1){
+        imgCaption.innerHTML = works[i].title;
+        if (categoriesName.indexOf(works[i].category.name) === -1) {
             categoriesName.push(works[i].category.name)
             categoriesId.push(works[i].category.id)
         }
-        imgCaption.innerHTML = works[i].title;
         workContainer.appendChild(imgWork);
         workContainer.appendChild(imgCaption);
         gallery.appendChild(workContainer);
-        }
-        if(ul.childElementCount === 0){generateFiltersBtn(categoriesName, categoriesId);}
-}
-
-function removeWorks()
-{
-    while(allWorks.lastElementChild)
-    {
-        allWorks.removeChild(allWorks.lastElementChild);
     }
+
+    //We check whether the buttons have already been generated or not
+    if (areFiltersGenerated()) { generateFiltersBtn(categoriesName, categoriesId); }
 }
 
 
+/**
+ * This function allows to know if filters was already generated or not.
+ *
+ * @return {number} return if filters was already generated or not
+ */
+
+function areFiltersGenerated() {
+    if (ul.childElementCount === 0) { return 1; }
+    else { return 0; }
+}
+
+/**
+ * This function allows to remove visible works.
+ */
+
+function removeWorks() {
+    gallery.innerHTML = "";
+}
 
 
-function generateFiltersBtn(filtersName, filtersId)
-{
 
-    //We should verify that there is more than 1 category to add the filter "All"
-    
-    if(filtersName.length>1)
-    {
-        let li = document.createElement("li")
-        li.innerHTML = "Tous";
-        li.id ="0";
-        selectedFiterId = li;
-        selectedFiterId.classList.add("selected");
-        selectedFiterId.classList.add("f0");
-        // li.classList.add("child");
-        // const li = `<li class ="child">Tous</li>`
-        // ul.insertAdjacentHTML("afterBegin", li);
-        // item[i].addEventListener("click", itemDone);
-    
+/**
+ * This function allows filtering by available category.
+ *
+ * @param {table} filtersName The table containing the category names.
+ * @param {table} filtersId The table containing the category id.
+ */
 
-        ul.appendChild(li);
-    }
-
-    for(i=0; i<filtersName.length; i++)
-    {
-        let li = document.createElement("li")
+function generateFiltersBtn(filtersName, filtersId) {
+    generateAllFilter(filtersName.length);
+    for (i = 0; i < filtersName.length; i++) {
+        const li = document.createElement("li")
         li.innerHTML = filtersName[i];
-        li.classList.add("f0");
-        li.id = "" + filtersId[i];
-        li.classList.add("f"+ (i+1));
-        // li.classList.add("child");
-        // const li = `<li class ="child">Tous</li>`
-        // ul.insertAdjacentHTML("afterBegin", li);
+        li.id = filtersId[i];
+        if (filtersName.length == 1) { selectedFiterId.classList.add("selected"); }
         ul.appendChild(li);
     }
     filterBtn.appendChild(ul);
 }
 
-getData(0);
+/**
+ * This function generates an "All" filter if more than 2 categories are available.
+ *
+ * @param {number} nbFilters The number of available filters.
+ */
+
+function generateAllFilter(nbFilters) {
+    if (nbFilters > 1) {
+        const li = document.createElement("li")
+        li.innerHTML = "Tous";
+        li.id = "0";
+        selectedFiterId = li;
+        selectedFiterId.classList.add("selected");
+        ul.appendChild(li);
+    }
+}
 
 
-let selectedFilterElement;
+/**
+ * This function adds the "selected" class to the selected filter.
+ *
+ * @param {HTMLElement} filter The li HTMLElement.
+ */
 
- ul.addEventListener("click", function(e) {
-    let target = e.target; // where was the click?
-    let target2 = e.target.id; // where was the click?
-    console.log("eeee" + target2);
-    //console.log(target.classList.contains("selected"));
-    //portfolio.innerHTML = "";
-    selectedFiterUpdate(target, target2);
-   });
-
-
-   
-let i = 2;
-   function selectedFiterUpdate(filter, filterId) {
+function selectedFilterUpdate(filter) {
     if (selectedFiterId) { // remove the existing highlight if any
         selectedFiterId.classList.remove('selected');
-        if(selectedFiterId){
-            removeWorks();getData(parseInt(filterId));}
-        else { }
     }
     selectedFiterId = filter;
     selectedFiterId.classList.add('selected'); // highlight the new td
-  }
-  
+    filterWorksUpdate(selectedFiterId.id);
+}
+
+/**
+ * This function can be used to filter works.
+ *
+ * @param {string} filterId The id assigned to the filter when it is generated.
+ */
+
+function filterWorksUpdate(filterId) {
+    removeWorks();
+    getData(parseInt(filterId));
+}
+
+ul.addEventListener("click", function (event) {
+    const target = event.target; // where was the click?
+    if (target.id) { selectedFilterUpdate(target); }
+});
+
+
+//First generation of all works
+
+getData(0);
+
+
+
+
+
+
 
 
 
