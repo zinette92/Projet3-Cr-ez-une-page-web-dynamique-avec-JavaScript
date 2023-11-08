@@ -33,7 +33,7 @@ function applyFilters(works, filterId) {
         displayWorks(works);
     }
     else {
-        const filtered = works.filter(function (id) {
+        const filtered = works.filter( (id) => {
             return id.categoryId === filterId;
         });
         displayWorks(filtered);
@@ -138,11 +138,9 @@ function generateAllFilter(nbFilters) {
  */
 
 function selectedFilterUpdate(filter) {
-    if (selectedFiterId) { // remove the existing highlight if any
-        selectedFiterId.classList.remove('selected');
-    }
+    if (selectedFiterId) { selectedFiterId.classList.remove('selected'); }
     selectedFiterId = filter;
-    selectedFiterId.classList.add('selected'); // highlight the new td
+    selectedFiterId.classList.add('selected'); 
     filterWorksUpdate(selectedFiterId.id);
 }
 
@@ -157,8 +155,8 @@ function filterWorksUpdate(filterId) {
     getData(parseInt(filterId));
 }
 
-ul.addEventListener("click", function (event) {
-    const target = event.target; // where was the click?
+ul.addEventListener("click", (event) => {
+    const target = event.target;
     if (target.id) { selectedFilterUpdate(target); }
 });
 
