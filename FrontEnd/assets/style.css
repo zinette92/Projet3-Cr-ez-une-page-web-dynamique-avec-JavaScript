@@ -49,8 +49,6 @@ table {
 }
 /** end reset css**/
 body {
-	display: flex;
-	flex-direction: column;
 	max-width: 1140px;
 	margin:auto;
 	font-family: 'Work Sans' ;
@@ -224,7 +222,7 @@ footer nav ul {
 }
 
 .filters li:hover{
-	background-color:rgba(29, 97, 84, 0.19);
+	background-color:rgba(29, 97, 84, 0.2);
 }
 
 .hide-portolio{
@@ -235,14 +233,5 @@ footer nav ul {
 	background-color: #1D6154;
 	color: white;
 }
-
-
-footer {  position: fixed;
-	margin: auto;
-	bottom:0;
-	max-width: 100%;
-	background-color: red;
-	color: white;
-	text-align: center;}
 
 
