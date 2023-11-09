@@ -15,9 +15,9 @@ let selectedFilterElement;
 async function getDataFilters() {
     const response = await fetch("http://localhost:5678/api/categories");
     filtersElements = await response.json();
-     
-    if(filtersElements){generateFilters(filtersElements);}
-    else {portfolio.classList.add("hide-portolio");}
+
+    if (filtersElements) { generateFilters(filtersElements); }
+    else { portfolio.classList.add("hide-portolio"); }
 }
 
 /**
@@ -30,7 +30,7 @@ async function getDataWorks(filterId) {
     const response = await fetch("http://localhost:5678/api/works");
     const worksElements = await response.json();
     if (worksElements) { applyFilters(worksElements, filterId); }
-    else {portfolio.classList.add("hide-portolio");} 
+    else { portfolio.classList.add("hide-portolio"); }
 }
 
 
@@ -42,11 +42,11 @@ async function getDataWorks(filterId) {
  */
 
 function generateFilters(nbFilters) {
-    
+
     const categoriesName = [];
     const categoriesId = [];
     generateAllFilter(nbFilters.length);
-    
+
     for (i = 0; i < nbFilters.length; i++) {
         const li = document.createElement("li")
         categoriesName.push(filtersElements[i].name)
@@ -88,7 +88,7 @@ function applyFilters(works, filterId) {
         displayWorks(works);
     }
     else {
-        const filteredWorks = works.filter( (id) => {
+        const filteredWorks = works.filter((id) => {
             return id.categoryId === filterId;
         });
         displayWorks(filteredWorks);
@@ -135,13 +135,13 @@ function removeWorks() {
  */
 
 function selectedFilterUpdate(filter) {
-    if (selectedFiterId && selectedFiterId !== filter) { 
-        selectedFiterId.classList.remove('selected'); 
+    if (selectedFiterId && selectedFiterId !== filter) {
+        selectedFiterId.classList.remove('selected');
         selectedFiterId = filter;
-        selectedFiterId.classList.add('selected'); 
+        selectedFiterId.classList.add('selected');
         filterWorksUpdate(selectedFiterId.id);
     }
-    
+
 }
 
 /**
