@@ -103,17 +103,16 @@ function removeWorks() {
 
 /**
  * This function add an event listener for each filter.
- * 
+ *
  *  @param {li} filter The <li> element.
  */
 
-function filterDetection(filter){
+function filterDetection(filter) {
   filter.addEventListener("click", (event) => {
     if (!event.target.classList.contains("selected")) {
       selectedFiter.classList.remove("selected");
       event.target.classList.add("selected");
       selectedFiter = event.target;
-      console.log("okkk");
       removeWorks();
       displayWorks(parseInt(event.target.dataset.id));
       // console.log("ok");
@@ -125,7 +124,6 @@ function filterDetection(filter){
 
 generateFilters();
 displayWorks(0);
-
 
 // ul.addEventListener("click", (event) => {
 //   if (event.target.dataset.id && !event.target.classList.contains("selected")) {
