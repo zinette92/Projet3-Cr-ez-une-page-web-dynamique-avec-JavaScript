@@ -64,7 +64,7 @@ function generateAllFilter() {
   const li = document.createElement("li");
   li.innerHTML = "Tous";
   li.dataset.id = "0";
-  li.classList.add("selected");;
+  li.classList.add("selected");
   selectedFiter = li;
   ul.appendChild(li);
 }
@@ -75,54 +75,27 @@ function generateAllFilter() {
  * @param {number} filterId All works available according to the chosen filter.
  */
 
-function applyFilters(filterId) {  
-  
+function displayWorks(filterId) {
   getWorks()
-  .then((works) => {
-    const filteredWorks = works.filter(filtered => filtered.categoryId === filterId);
-    filteredWorks.forEach((work) => {
-    const workContainer = document.createElement("figure");
-    const imgWork = document.createElement("img");
-    const imgCaption = document.createElement("figcaption");
-    imgWork.src = work.imageUrl;
-    imgWork.alt = work.title;
-    imgCaption.innerHTML = work.title;
-    workContainer.appendChild(imgWork);
-    workContainer.appendChild(imgCaption);
-    gallery.appendChild(workContainer);
+    .then((works) => {
+      const filteredWorks = works.filter(
+        (filtered) => filtered.categoryId === filterId || filterId === 0
+      );
+      filteredWorks.forEach((work) => {
+        const workContainer = document.createElement("figure");
+        const imgWork = document.createElement("img");
+        const imgCaption = document.createElement("figcaption");
+        imgWork.src = work.imageUrl;
+        imgWork.alt = work.title;
+        imgCaption.innerHTML = work.title;
+        workContainer.appendChild(imgWork);
+        workContainer.appendChild(imgCaption);
+        gallery.appendChild(workContainer);
+      });
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-}
-
-/**
- * This function displays all available works.
- *
- * @param {json} works All works available according to the chosen filter.
- */
-
-function displayWorks() {
-
-  getWorks()
-  .then((works) => {
-    works.forEach((work) => {
-    const workContainer = document.createElement("figure");
-    const imgWork = document.createElement("img");
-    const imgCaption = document.createElement("figcaption");
-    imgWork.src = work.imageUrl;
-    imgWork.alt = work.title;
-    imgCaption.innerHTML = work.title;
-    workContainer.appendChild(imgWork);
-    workContainer.appendChild(imgCaption);
-    gallery.appendChild(workContainer);
-    });
-  })
-  .catch((error) => {
-    console.log(error);
-  });
-
 }
 
 /**
@@ -141,19 +114,11 @@ ul.addEventListener("click", (event) => {
     event.target.classList.add("selected");
     selectedFiter = event.target;
     removeWorks();
-    if(event.target.dataset.id === "0")
-    {
-      displayWorks();
-    }
-    else
-    {
-          applyFilters(parseInt(event.target.dataset.id));
-
-    }
+    displayWorks(parseInt(event.target.dataset.id));
     // console.log("ok");
   }
 });
 
-
+//First generation
 generateFilters();
-displayWorks();
+displayWorks(0);
