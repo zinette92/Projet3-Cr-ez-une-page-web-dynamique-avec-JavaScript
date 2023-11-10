@@ -2,7 +2,7 @@
 const gallery = document.querySelector(".gallery");
 const portfolio = document.querySelector("#portfolio");
 const filterBtn = document.querySelector(".filters");
-const ul = document.querySelector(".filters ul");
+const filtersList = document.querySelector(".filters ul");
 const allWorks = document.querySelector(".gallery");
 let selectedFiter;
 
@@ -19,8 +19,6 @@ async function getCategories() {
 
 /**
  * This function retrieve all available works.
- *
- * @param {number} filterId All works available according to the chosen filter.
  */
 
 async function getWorks() {
@@ -30,10 +28,7 @@ async function getWorks() {
 }
 
 /**
- * This function allows filtering by available category.
- *
- * @param {table} filtersName The table containing the category names.
- * @param {table} filtersId The table containing the category id.
+ * This function generate all filters.
  */
 
 function generateFilters() {
@@ -43,10 +38,11 @@ function generateFilters() {
       // console.log(categories);
       categories.forEach((category) => {
         // console.log(category);
-        const li = document.createElement("li");
-        li.innerHTML = category.name;
-        li.dataset.id = category.id;
-        ul.appendChild(li);
+        const filter = document.createElement("li");
+        filter.innerHTML = category.name;
+        filter.dataset.id = category.id;
+        filterDetection(filter);
+        filtersList.appendChild(filter);
       });
     })
     .catch((error) => {
@@ -55,18 +51,17 @@ function generateFilters() {
 }
 
 /**
- * This function generates an "All" filter if there at least 2 filters available.
- *
- * @param {number} nbFilters The number of available filters.
+ * This function generates an "All" filter.
  */
 
 function generateAllFilter() {
-  const li = document.createElement("li");
-  li.innerHTML = "Tous";
-  li.dataset.id = "0";
-  li.classList.add("selected");
-  selectedFiter = li;
-  ul.appendChild(li);
+  const filter = document.createElement("li");
+  filter.innerHTML = "Tous";
+  filter.dataset.id = "0";
+  filter.classList.add("selected");
+  selectedFiter = filter;
+  filterDetection(filter);
+  filtersList.appendChild(filter);
 }
 
 /**
@@ -106,19 +101,41 @@ function removeWorks() {
   gallery.innerHTML = "";
 }
 
-//Detect click on filters
+/**
+ * This function add an event listener for each filter.
+ * 
+ *  @param {li} filter The <li> element.
+ */
 
-ul.addEventListener("click", (event) => {
-  if (event.target.dataset.id && !event.target.classList.contains("selected")) {
-    selectedFiter.classList.remove("selected");
-    event.target.classList.add("selected");
-    selectedFiter = event.target;
-    removeWorks();
-    displayWorks(parseInt(event.target.dataset.id));
-    // console.log("ok");
-  }
-});
+function filterDetection(filter){
+  filter.addEventListener("click", (event) => {
+    if (!event.target.classList.contains("selected")) {
+      selectedFiter.classList.remove("selected");
+      event.target.classList.add("selected");
+      selectedFiter = event.target;
+      console.log("okkk");
+      removeWorks();
+      displayWorks(parseInt(event.target.dataset.id));
+      // console.log("ok");
+    }
+  });
+}
 
-//First generation
+//First generation of filters & works
+
 generateFilters();
 displayWorks(0);
+
+
+// ul.addEventListener("click", (event) => {
+//   if (event.target.dataset.id && !event.target.classList.contains("selected")) {
+//     selectedFiter.classList.remove("selected");
+//     event.target.classList.add("selected");
+//     selectedFiter = event.target;
+//     removeWorks();
+//     displayWorks(parseInt(event.target.dataset.id));
+//     // console.log("ok");
+//   }
+// });
+
+//First generation
