@@ -1,13 +1,13 @@
-const form = document.querySelector("#login form");
+const loginForm = document.querySelector("#login form");
 
+loginForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
+  const loginInformation = {
+    email: event.target.querySelector("[name=email]").value,
+    password: event.target.querySelector("[name=password]").value,
+  };
 
-    const loginInformation = {
-        email: event.target.querySelector("[name=email]").value,
-        password: event.target.querySelector("[name=password]").value,
-    }
 
     const chargeUtile = JSON.stringify(loginInformation);
     const wrongPwd = document.querySelector(".pwd-wrong");
@@ -27,12 +27,18 @@ form.addEventListener("submit", (event) => {
         if (response.status !== 200) { throw new Error(); }
         else { return response.json(); }
     }).then((data) => {
-        if (wrongPwd.textContent !== "") { wrongPwd.innerHTML = "" }
-        sessionStorage.setItem('userId', data.userId);
-        sessionStorage.setItem('token', data.token);
-        window.location.href = "index.html";
+      if (wrongPwd.textContent !== "") {
+        wrongPwd.innerHTML = "";
+      }
+      window.localStorage.setItem("userId", data.userId);
+      window.localStorage.setItem("token", data.token);
+      window.location.href = "index.html";
     })
-        .catch(() => {
-            wrongPwd.innerHTML = "Cette combinaison e-mail et mot de passe est incorrecte."
-        });
+    .catch(() => {
+      wrongPwd.innerHTML =
+        "Erreur dans l'identifiant ou le mot de passe.";
+    });
 });
+
+
+ 
