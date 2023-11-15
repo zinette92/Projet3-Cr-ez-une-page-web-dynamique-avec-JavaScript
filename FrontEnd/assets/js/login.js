@@ -1,6 +1,6 @@
-const form = document.querySelector("#login form");
+const loginForm = document.querySelector("#login form");
 
-form.addEventListener("submit", (event) => {
+loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const loginInformation = {
@@ -13,10 +13,7 @@ form.addEventListener("submit", (event) => {
 
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
-    headers: {
-      accept: "application/json",
-      "Content-Type": "application/json",
-    },
+    headers: {"Content-Type": "application/json"},
     body: chargeUtile,
   })
     .then((response) => {
@@ -30,12 +27,15 @@ form.addEventListener("submit", (event) => {
       if (wrongPwd.textContent !== "") {
         wrongPwd.innerHTML = "";
       }
-      sessionStorage.setItem("userId", data.userId);
-      sessionStorage.setItem("token", data.token);
+      window.localStorage.setItem("userId", data.userId);
+      window.localStorage.setItem("token", data.token);
       window.location.href = "index.html";
     })
     .catch(() => {
       wrongPwd.innerHTML =
-        "Cette combinaison e-mail et mot de passe est incorrecte.";
+        "Erreur dans l'identifiant ou le mot de passe.";
     });
 });
+
+
+ 
