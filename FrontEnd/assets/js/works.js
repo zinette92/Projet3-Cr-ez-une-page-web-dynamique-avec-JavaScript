@@ -1,10 +1,9 @@
 // const { categories } = require("./models");
 const gallery = document.querySelector(".gallery");
+const portfolioHeader = document.createElement("div");
+const filtersContainer = document.createElement("div");
+const filtersList = document.createElement("ul");
 const portfolio = document.querySelector("#portfolio");
-const filterBtn = document.querySelector(".filters");
-const filtersList = document.querySelector(".filters ul");
-const allWorks = document.querySelector(".gallery");
-let selectedFiter;
 
 /**
  * This function retrieve all categories available.
@@ -27,17 +26,28 @@ async function getWorks() {
   return works;
 }
 
+function generatePortfolioHeader() {
+  portfolioHeader.classList.add("portfolio-header");
+  portfolioHeader.innerHTML = `<div class ="portfolio-header-container">
+           <h2>Mes Projets</h2>
+          <a href="#" class="icon-and-text update-portfolio-hide" data-toggle="modal" data-target="#myModal">
+             <i class="fa-solid fa-pen-to-square"></i>
+             <span>modifier</span>
+           </a>
+ </div>`;
+  portfolio.prepend(portfolioHeader);
+}
+
 /**
  * This function generate all filters.
  */
 
 function generateFilters() {
+  filtersContainer.classList.add("filters");
   getCategories()
     .then((categories) => {
       generateAllFilter();
-      // console.log(categories);
       categories.forEach((category) => {
-        // console.log(category);
         const filter = document.createElement("li");
         filter.innerHTML = category.name;
         filter.dataset.id = category.id;
@@ -47,7 +57,10 @@ function generateFilters() {
     })
     .catch((error) => {
       console.log(error);
+      return;
     });
+  filtersContainer.appendChild(filtersList);
+  portfolio.insertBefore(filtersContainer, gallery);
 }
 
 /**
@@ -59,7 +72,6 @@ function generateAllFilter() {
   filter.innerHTML = "Tous";
   filter.dataset.id = "0";
   filter.classList.add("selected");
-  selectedFiter = filter;
   filterDetection(filter);
   filtersList.appendChild(filter);
 }
@@ -110,9 +122,10 @@ function removeWorks() {
 function filterDetection(filter) {
   filter.addEventListener("click", (event) => {
     if (!event.target.classList.contains("selected")) {
-      selectedFiter.classList.remove("selected");
+      document
+        .getElementsByClassName("selected")[0]
+        .classList.remove("selected");
       event.target.classList.add("selected");
-      selectedFiter = event.target;
       removeWorks();
       displayWorks(parseInt(event.target.dataset.id));
       // console.log("ok");
@@ -122,18 +135,6 @@ function filterDetection(filter) {
 
 //First generation of filters & works
 
+generatePortfolioHeader();
 generateFilters();
 displayWorks(0);
-
-// ul.addEventListener("click", (event) => {
-//   if (event.target.dataset.id && !event.target.classList.contains("selected")) {
-//     selectedFiter.classList.remove("selected");
-//     event.target.classList.add("selected");
-//     selectedFiter = event.target;
-//     removeWorks();
-//     displayWorks(parseInt(event.target.dataset.id));
-//     // console.log("ok");
-//   }
-// });
-
-//First generation
