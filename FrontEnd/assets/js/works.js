@@ -1,3 +1,6 @@
+import { getWorks } from "./index.js";
+import { getCategories } from "./index.js";
+
 // const { categories } = require("./models");
 const gallery = document.querySelector(".gallery");
 const portfolioHeader = document.createElement("div");
@@ -5,32 +8,32 @@ const filtersContainer = document.createElement("div");
 const filtersList = document.createElement("ul");
 const portfolio = document.querySelector("#portfolio");
 
-/**
- * This function retrieve all categories available.
- */
+// /**
+//  * This function retrieve all categories available.
+//  */
 
-async function getCategories() {
-  const response = await fetch("http://localhost:5678/api/categories");
-  const categories = await response.json();
-  // console.log(categories);
-  return categories;
-}
+// async function getCategories() {
+//   const response = await fetch("http://localhost:5678/api/categories");
+//   const categories = await response.json();
+//   // console.log(categories);
+//   return categories;
+// }
 
-/**
- * This function retrieve all available works.
- */
+// /**
+//  * This function retrieve all available works.
+//  */
 
-async function getWorks() {
-  const response = await fetch("http://localhost:5678/api/works");
-  const works = await response.json();
-  return works;
-}
+// async function getWorks() {
+//   const response = await fetch("http://localhost:5678/api/works");
+//   const works = await response.json();
+//   return works;
+// }
 
 function generatePortfolioHeader() {
   portfolioHeader.classList.add("portfolio-header");
   portfolioHeader.innerHTML = `<div class ="portfolio-header-container">
            <h2>Mes Projets</h2>
-          <a href="#" class="icon-and-text update-portfolio-hide" data-toggle="modal" data-target="#myModal">
+          <a href="#" class="update-portfolio update-portfolio-hide" data-toggle="modal" data-target="#myModal">
              <i class="fa-solid fa-pen-to-square"></i>
              <span>modifier</span>
            </a>
