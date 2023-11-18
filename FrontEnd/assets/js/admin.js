@@ -1,8 +1,7 @@
 const loginNav = document.querySelector(".login");
+const updatePortoflio = document.querySelector(".update-portfolio");
 const filters = document.querySelector(".filters");
-const updatePortoflio = document.querySelector(".update-portfolio-hide");
-const closeModal = document.querySelector(".close-modal");
-// const modal = document.querySelector(".");;
+
 
 if (window.localStorage.getItem("token")) {
   loginNav.innerHTML = "logout";
@@ -12,25 +11,9 @@ if (window.localStorage.getItem("token")) {
 
 loginNav.addEventListener("click", () => {
   if (window.localStorage.getItem("token")) {
-    window.localStorage.clear();
-    loginNav.innerHTML = '<a href ="index.html">login</a>';
-    filters.classList.remove("hide-filters");
-    updatePortoflio.classList.add("update-portfolio-hide");
-  }
-});
-
-updatePortoflio.addEventListener("click", () => {
-  document.getElementById("myModal").style.display = "block";
-});
-
-closeModal.addEventListener("click", () => {
-  document.getElementById("myModal").style.display = "none";
-});
-
-loginNav.addEventListener("click", () => {
-  if (window.localStorage.getItem("token")) {
-    window.localStorage.clear();
-    loginNav.innerHTML = '<a href ="index.html">login</a>';
+    window.localStorage.removeItem("userId");
+    window.localStorage.removeItem("token");
+    loginNav.innerHTML = '<a href ="login.html">login</a>';
     filters.classList.remove("hide-filters");
     updatePortoflio.classList.add("update-portfolio-hide");
   }

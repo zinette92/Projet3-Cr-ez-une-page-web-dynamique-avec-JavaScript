@@ -8,13 +8,17 @@ loginForm.addEventListener("submit", (event) => {
     password: event.target.querySelector("[name=password]").value,
   };
 
-  const chargeUtile = JSON.stringify(loginInformation);
+  const loginData = JSON.stringify(loginInformation);
   const wrongPwd = document.querySelector(".pwd-wrong");
+  const test = 18;
 
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: chargeUtile,
+    headers: {
+      accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: loginData,
   })
     .then((response) => {
       if (response.status !== 200) {
@@ -32,10 +36,6 @@ loginForm.addEventListener("submit", (event) => {
       window.location.href = "index.html";
     })
     .catch(() => {
-      wrongPwd.innerHTML =
-        "Erreur dans l'identifiant ou le mot de passe.";
+      wrongPwd.innerHTML = "Erreur dans l'identifiant ou le mot de passe.";
     });
 });
-
-
- 
