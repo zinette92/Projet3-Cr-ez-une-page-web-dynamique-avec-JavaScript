@@ -13,13 +13,13 @@ function generateModalCleanWorks() {
   modalCleanWorks.classList.add("modal");
   modalContent.classList.add("modal-content");
   closeModalCross.classList.add("close-modal", "close-modal-clean-works");
-  closeModalCross.innerHTML = "&times;"
-  modalTitle.classList.add("modal-title")
+  closeModalCross.innerHTML = "&times;";
+  modalTitle.classList.add("modal-title");
   modalTitle.innerHTML = "Galerie photos";
   deletableWorksContainer.classList.add("deletable-works-container");
   displayDeletableWorks(deletableWorksContainer);
 
-
+  // deletable-works-inner-container
 
   // modalContent.innerHTML = `
   //   <span class="close-modal close-modal-clean-works">&times;</span>`;
@@ -34,29 +34,41 @@ function generateModalCleanWorks() {
     modalCleanWorks
   );
 }
-{/* <i class="fa-solid fa-trash-can"></i> */}
+{
+  /* <i class="fa-solid fa-trash-can"></i> */
+}
 
 function displayDeletableWorks(worksContainer) {
   getWorks()
     .then((worksList) => {
       worksList.forEach((work) => {
+        const imgDeletableWork2 = document.createElement("figure");
         const imgDeletableWork = document.createElement("img");
+        const deleteIconContainer = document.createElement("span");
         const deleteIcon = document.createElement("i");
+        imgDeletableWork2.classList.add("deletable-work2");
         imgDeletableWork.classList.add("deletable-work");
         imgDeletableWork.src = work.imageUrl;
         imgDeletableWork.alt = work.title;
-        deleteIcon.classList.add("fa-solid", "fa-trash-can", "remove-work-icon");
-        imgDeletableWork.appendChild(deleteIcon);
-        worksContainer.appendChild(imgDeletableWork);
+        deleteIconContainer.classList.add("remove-work-icon-container");
+        deleteIconContainer.dataset.id = work.id;
+        deleteIcon.classList.add(
+          "fa-solid",
+          "fa-trash-can",
+          "remove-work-icon"
+        );
+        deleteIconContainer.appendChild(deleteIcon);
+        imgDeletableWork2.appendChild(imgDeletableWork);
+        imgDeletableWork2.appendChild(deleteIconContainer);
+        worksContainer.appendChild(imgDeletableWork2);
+        removeWork(deleteIconContainer);
+        console.log(localStorage.getItem("token"));
       });
     })
     .catch((error) => {
       console.log(error);
     });
 }
-
-
-
 
 function openModal(modal) {
   document.querySelector(".update-portfolio").addEventListener("click", () => {
@@ -70,9 +82,26 @@ function closeModal(closeModalBtn, modal) {
   });
 
   modal.addEventListener("click", (event) => {
-    if (event.target !== document.querySelector(".modal-content")) {
+    if (event.target === document.querySelector(".modal")) {
       modal.style.display = "none";
+      // localStorage.clear();
     }
+  });
+}
+
+function removeWork(target) {
+  target.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    fetch("http://localhost:5678/api/works/" + target.dataset.id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }).catch(() => {
+      console("Une erreur est survenue");
+    });
   });
 }
 

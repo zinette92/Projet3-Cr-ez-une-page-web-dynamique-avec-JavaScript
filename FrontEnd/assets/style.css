@@ -233,8 +233,8 @@ li:hover {
   font-size: 1.2em;
 }
 
-.update-portfolio-hide{
-	display: none;
+.update-portfolio-hide {
+  display: none;
 }
 /* #portfolio h2 {
 	text-align: center;
@@ -341,71 +341,116 @@ footer nav ul {
   visibility: hidden;
 }
 
-
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
 
-  .modal-content {
-    background-color: #fefefe;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 30%;
-	height: 60%;
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  height: 70%;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+}
 
-  }
+.close-modal {
+  align-self: flex-end;
+  color: black;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-  .close-modal {
-
-    align-self: flex-end;
-    color: black;
-    font-size: 28px;
-    font-weight: bold;
-	cursor: pointer;
-  }
-
-
-.modal-title{
+.modal-title {
   align-self: center;
   font-size: 1.7em;
 }
 
-
-.deletable-works-container{
-  align-self: center;
-  display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
-  gap: 15px;
+.deletable-works-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 20px;
   width: 85%;
-  height: 60%;
-  padding: 15px;
+  height: 70%;
+  align-self: center;
   background-color: beige;
+
   margin-top: 30px;
+  overflow: auto;
+
+  /* 
+   
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, 16%);
+  column-gap: 5px;
+  row-gap: 0px;
+    
+  background-color: beige;  
+  margin-top: 30px; 
+  
+  
+  
+  /* align-self: center; */
+  /* display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; */
+  /* justify-content: center; */
+  /* align-items: center; */
+
+  /* gap: 10px;
+   
+  margin-bottom: 20px;  */
 }
 
-.deletable-work{
-  width: 15%;
-  height: auto;
+/* .deletable-works-inner-container{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+
+} */
+
+.deletable-work2 {
+  display: inline;
+  width: 100%;
 }
 
-.remove-work-icon{
+.deletable-work {
+  object-fit: cover;
+  display: inline;
+  width: 100%;
+}
+
+.remove-work-icon-container {
+  display: block;
   position: absolute;
+  background-color: black;
+  text-align: center;
+  top: 5px;
+  right: 5px;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.remove-work-icon {
   color: white;
-  top: 10px;
-  right: 10px;
+  font-size: 10px;
 }
 
 @media (max-width: 1024px) {
