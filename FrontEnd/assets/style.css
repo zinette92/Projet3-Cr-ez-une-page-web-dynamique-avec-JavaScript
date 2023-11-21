@@ -183,6 +183,9 @@ nav a {
   color: inherit;
 }
 
+.login {
+  cursor: pointer;
+}
 li:hover {
   color: #b1663c;
 }
@@ -231,6 +234,11 @@ li:hover {
   text-decoration: none;
   color: black;
   font-size: 1.2em;
+}
+
+.update-portfolio {
+  cursor: pointer;
+
 }
 
 .update-portfolio-hide {
@@ -359,7 +367,7 @@ footer nav ul {
   padding: 20px;
   border: 1px solid #888;
   width: 30%;
-  height: 70%;
+  height: 75%;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -383,47 +391,13 @@ footer nav ul {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 20px;
-  width: 85%;
-  height: 70%;
+  max-width: 85%;
+  max-height: 70%;
   align-self: center;
-  background-color: beige;
-
-  margin-top: 30px;
+  margin-top: 60px;
   overflow: auto;
-
-  /* 
-   
-  justify-content: center;
-  grid-template-columns: repeat(auto-fill, 16%);
-  column-gap: 5px;
-  row-gap: 0px;
-    
-  background-color: beige;  
-  margin-top: 30px; 
-  
-  
-  
-  /* align-self: center; */
-  /* display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap; */
-  /* justify-content: center; */
-  /* align-items: center; */
-
-  /* gap: 10px;
-   
-  margin-bottom: 20px;  */
 }
 
-/* .deletable-works-inner-container{
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-
-} */
 
 .deletable-work2 {
   display: inline;
@@ -437,20 +411,42 @@ footer nav ul {
 }
 
 .remove-work-icon-container {
-  display: block;
+  display: flex;
   position: absolute;
   background-color: black;
-  text-align: center;
+  border-radius: 3px;
+  justify-content: center;
+  align-items: center;
   top: 5px;
   right: 5px;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }
 
 .remove-work-icon {
   color: white;
-  font-size: 10px;
+  font-size: 12px;
+}
+
+.separation-content-button{
+  width: 85%;
+  height: 1px;
+  background-color: #b3b3b3;
+  align-self: center;
+  margin-top: 50px;
+}
+
+.modal-btn{
+  width: 40%;
+  height: 40px;
+  border-radius: 50px;
+  background-color: #1D6154;
+  color: white;
+  align-self: center;
+  margin-top: 50px;
+  font-size: 1.2em;
+  cursor: pointer;
 }
 
 @media (max-width: 1024px) {

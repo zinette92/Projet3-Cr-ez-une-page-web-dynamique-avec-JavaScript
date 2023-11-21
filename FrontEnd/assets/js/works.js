@@ -8,32 +8,16 @@ const filtersContainer = document.createElement("div");
 const filtersList = document.createElement("ul");
 const portfolio = document.querySelector("#portfolio");
 
-// /**
-//  * This function retrieve all categories available.
-//  */
 
-// async function getCategories() {
-//   const response = await fetch("http://localhost:5678/api/categories");
-//   const categories = await response.json();
-//   // console.log(categories);
-//   return categories;
-// }
-
-// /**
-//  * This function retrieve all available works.
-//  */
-
-// async function getWorks() {
-//   const response = await fetch("http://localhost:5678/api/works");
-//   const works = await response.json();
-//   return works;
-// }
+/**
+ * This function generate the portfolio title and the anchor to open the modal.
+ */
 
 function generatePortfolioHeader() {
   portfolioHeader.classList.add("portfolio-header");
   portfolioHeader.innerHTML = `<div class ="portfolio-header-container">
            <h2>Mes Projets</h2>
-          <a href="#" class="update-portfolio update-portfolio-hide" data-toggle="modal" data-target="#myModal">
+          <a class="update-portfolio update-portfolio-hide" data-toggle="modal" data-target="#myModal">
              <i class="fa-solid fa-pen-to-square"></i>
              <span>modifier</span>
            </a>
@@ -79,6 +63,7 @@ function generateAllFilter() {
   filtersList.appendChild(filter);
 }
 
+
 /**
  * This function apply the filter selected.
  *
@@ -95,12 +80,13 @@ function displayWorks(filterId) {
         const workContainer = document.createElement("figure");
         const imgWork = document.createElement("img");
         const imgCaption = document.createElement("figcaption");
+        workContainer.dataset.workId = work.id;
         imgWork.src = work.imageUrl;
         imgWork.alt = work.title;
         imgCaption.innerHTML = work.title;
         workContainer.appendChild(imgWork);
         workContainer.appendChild(imgCaption);
-        gallery.appendChild(workContainer);
+        document.querySelector(".gallery").appendChild(workContainer);
       });
     })
     .catch((error) => {
@@ -109,12 +95,14 @@ function displayWorks(filterId) {
 }
 
 /**
- * This function allows to remove visible works.
+ * This function allows to remove all visible works.
  */
 
 function removeWorks() {
-  gallery.innerHTML = "";
+  document.querySelector(".gallery").innerHTML = "";
 }
+
+
 
 /**
  * This function add an event listener for each filter.

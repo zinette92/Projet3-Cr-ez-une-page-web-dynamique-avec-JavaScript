@@ -1,42 +1,58 @@
 import { getWorks } from "./index.js";
 import { getCategories } from "./index.js";
+import { removeModalWork } from "./index.js";
+
 
 const updatePortoflio = document.querySelector(".update-portfolio");
 
 function generateModalCleanWorks() {
+
   const modalCleanWorks = document.createElement("div");
-  const modalContent = document.createElement("div");
-  const closeModalCross = document.createElement("span");
-  const modalTitle = document.createElement("p");
-  const deletableWorksContainer = document.createElement("div");
   modalCleanWorks.setAttribute("id", "modal-clean-Works");
   modalCleanWorks.classList.add("modal");
+
+  const modalContent = document.createElement("div");
   modalContent.classList.add("modal-content");
+
+  const closeModalCross = document.createElement("span");
   closeModalCross.classList.add("close-modal", "close-modal-clean-works");
   closeModalCross.innerHTML = "&times;";
+
+  const modalTitle = document.createElement("p");
   modalTitle.classList.add("modal-title");
   modalTitle.innerHTML = "Galerie photos";
+
+  const deletableWorksContainer = document.createElement("div");
   deletableWorksContainer.classList.add("deletable-works-container");
+
+  const separationContentButton = document.createElement("span");
+  separationContentButton.classList.add("separation-content-button");
+
+  const addPhotoBtn = document.createElement("button");
+  addPhotoBtn.classList.add("modal-btn", "add-photo-btn");
+  addPhotoBtn.innerHTML ="Ajouter une photo"
+  
+  
+  
   displayDeletableWorks(deletableWorksContainer);
 
-  // deletable-works-inner-container
-
-  // modalContent.innerHTML = `
-  //   <span class="close-modal close-modal-clean-works">&times;</span>`;
   modalContent.appendChild(closeModalCross);
   modalContent.appendChild(modalTitle);
   modalContent.appendChild(deletableWorksContainer);
+  modalContent.appendChild(separationContentButton);
+  modalContent.appendChild(addPhotoBtn);
   modalCleanWorks.appendChild(modalContent);
   document.body.appendChild(modalCleanWorks);
+
+
   openModal(modalCleanWorks);
   closeModal(
     document.querySelector(".close-modal-clean-works"),
     modalCleanWorks
   );
+  console.log(separationContentButton);
 }
-{
-  /* <i class="fa-solid fa-trash-can"></i> */
-}
+
 
 function displayDeletableWorks(worksContainer) {
   getWorks()
@@ -44,14 +60,14 @@ function displayDeletableWorks(worksContainer) {
       worksList.forEach((work) => {
         const imgDeletableWork2 = document.createElement("figure");
         const imgDeletableWork = document.createElement("img");
-        const deleteIconContainer = document.createElement("span");
+        const deleteIconContainer = document.createElement("a");
         const deleteIcon = document.createElement("i");
         imgDeletableWork2.classList.add("deletable-work2");
         imgDeletableWork.classList.add("deletable-work");
         imgDeletableWork.src = work.imageUrl;
         imgDeletableWork.alt = work.title;
         deleteIconContainer.classList.add("remove-work-icon-container");
-        deleteIconContainer.dataset.id = work.id;
+        deleteIconContainer.dataset.removedWorkId = work.id;
         deleteIcon.classList.add(
           "fa-solid",
           "fa-trash-can",
@@ -61,8 +77,7 @@ function displayDeletableWorks(worksContainer) {
         imgDeletableWork2.appendChild(imgDeletableWork);
         imgDeletableWork2.appendChild(deleteIconContainer);
         worksContainer.appendChild(imgDeletableWork2);
-        removeWork(deleteIconContainer);
-        console.log(localStorage.getItem("token"));
+        removeAWork(deleteIconContainer);
       });
     })
     .catch((error) => {
@@ -70,10 +85,13 @@ function displayDeletableWorks(worksContainer) {
     });
 }
 
+
 function openModal(modal) {
-  document.querySelector(".update-portfolio").addEventListener("click", () => {
-    modal.style.display = "block";
-  });
+  document
+    .querySelector(".update-portfolio")
+    .addEventListener("click", (event) => {
+      modal.style.display = "block";
+    });
 }
 
 function closeModal(closeModalBtn, modal) {
@@ -84,24 +102,20 @@ function closeModal(closeModalBtn, modal) {
   modal.addEventListener("click", (event) => {
     if (event.target === document.querySelector(".modal")) {
       modal.style.display = "none";
-      // localStorage.clear();
     }
   });
 }
 
-function removeWork(target) {
-  target.addEventListener("click", (event) => {
-    event.preventDefault();
 
-    fetch("http://localhost:5678/api/works/" + target.dataset.id, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }).catch(() => {
-      console("Une erreur est survenue");
-    });
+function removeAWork(target) {
+  target.addEventListener("click", (event) => {
+    console.log(target);
+    const workToRemoveId = target.getAttribute("data-removed-work-id");
+
+    if (removeModalWork(workToRemoveId)) {
+      target.parentElement.remove();
+      document.querySelector(`[data-work-id='${workToRemoveId}']`).remove();
+    }
   });
 }
 
