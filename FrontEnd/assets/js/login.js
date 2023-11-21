@@ -39,3 +39,4 @@ loginForm.addEventListener("submit", (event) => {
       wrongPwd.innerHTML = "Erreur dans l'identifiant ou le mot de passe.";
     });
 });
+
