@@ -368,8 +368,7 @@ footer nav ul {
   border: 1px solid #888;
   width: 30%;
   /* height: 75%; */
-  height: fit-content;
-  max-height: 700px;
+  height: 700px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -411,7 +410,7 @@ footer nav ul {
   grid-column-gap: 10px;
   grid-row-gap: 20px;
   max-width: 85%;
-  max-height: 70%;
+  height: 70%;
   align-self: center;
   margin-top: 60px;
   overflow: auto;
@@ -467,6 +466,73 @@ footer nav ul {
   font-size: 1.2em;
   cursor: pointer;
 }
+
+.add-photo-form{
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  height: 70%;
+}
+
+.add-photo-frame{
+  width: 100%;
+  height: 250px;
+  margin-top: 60px;
+  background-color: #E8F1F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-photo-before-upload{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.add-photo-after-upload{
+  object-fit: cover;
+  width: 40%;
+  height: 100%;
+  display: none;
+}
+
+
+.add-photo-icon{
+  font-size: 7.5em;
+  color: #B9C5CC ;
+}
+
+#add-photo{
+  
+  display: none;
+}
+
+.add-photo-label{
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  height: 50px;
+  border-radius: 50px;
+  border: none;
+  background-color: #CBD6DC ;
+  color: #306685;
+  font-size: 1.6em;
+  cursor: pointer;
+}
+
+.add-photo-rules{
+  
+  font-size: 1em;
+  font-weight: 400;
+}
+
 
 @media (max-width: 1024px) {
 }
