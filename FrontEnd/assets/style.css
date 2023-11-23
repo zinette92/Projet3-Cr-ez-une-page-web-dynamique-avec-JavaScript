@@ -367,18 +367,37 @@ footer nav ul {
   padding: 20px;
   border: 1px solid #888;
   width: 30%;
-  height: 75%;
+  /* height: 75%; */
+  height: fit-content;
+  max-height: 700px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
 }
 
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 .close-modal {
-  align-self: flex-end;
+  /* align-self: flex-end; */
   color: black;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.back-modal {
+  /* align-self: flex-end; */
+  color: rgba(0, 0, 0, 1);
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-modal-hide {
+  color: rgba(0, 0, 0, 0);
 }
 
 .modal-title {

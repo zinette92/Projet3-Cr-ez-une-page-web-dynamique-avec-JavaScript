@@ -26,26 +26,26 @@ export async function getWorks() {
  */
 
 
-export async function removeModalWork(target) {
-  const res = await fetch(
-    "http://localhost:5678/api/works/" + target,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  )
-    .then((res) => {
-      console.log(res);
-      if (!res.ok) {
-        throw new Error("Erreur lors de la suppression des données");
-      } else {
-        return 1;
-      }
-    })
-    .catch((error) => {
-      console.log("Erreur lors de la suppression des données:", error);
-    });
-}
+// export async function removeModalWork(target) {
+//   const res = await fetch(
+//     "http://localhost:5678/api/works/" + target,
+//     {
+//       method: "DELETE",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${localStorage.getItem("token")}`,
+//       },
+//     }
+//   )
+//     .then((res) => {
+//       console.log(res);
+//       if (!res.ok) {
+//         throw new Error("Erreur lors de la suppression des données");
+//       } else {
+//         return 1;
+//       }
+//     })
+//     .catch((error) => {
+//       console.log("Erreur lors de la suppression des données:", error);
+//     });
+// }
