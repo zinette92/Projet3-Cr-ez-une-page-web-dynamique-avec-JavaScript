@@ -257,7 +257,10 @@ li:hover {
 }
 
 .gallery img {
+  object-fit: cover;
   width: 100%;
+  height: 500px;
+  /* height: auto; */
 }
 #contact {
   width: 50%;
@@ -408,7 +411,7 @@ footer nav ul {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: 10px;
-  grid-row-gap: 20px;
+  grid-row-gap: 10px;
   max-width: 85%;
   height: 70%;
   align-self: center;
@@ -417,15 +420,13 @@ footer nav ul {
 }
 
 
-.deletable-work2 {
-  display: inline;
-  width: 100%;
-}
+
 
 .deletable-work {
   object-fit: cover;
   display: inline;
   width: 100%;
+  height: 110px;
 }
 
 .remove-work-icon-container {
@@ -460,6 +461,7 @@ footer nav ul {
   height: 40px;
   border-radius: 50px;
   background-color: #1D6154;
+  border: none;
   color: white;
   align-self: center;
   margin-top: 50px;
@@ -473,6 +475,7 @@ footer nav ul {
   flex-direction: column;
   width: 85%;
   height: 70%;
+  gap:25px;
 }
 
 .add-photo-frame{
@@ -496,18 +499,24 @@ footer nav ul {
 
 .add-photo-after-upload{
   object-fit: cover;
-  width: 40%;
+  width: auto;
   height: 100%;
+  max-width: 100%;
   display: none;
 }
 
+.upload-photo-error{
+  font-weight: bold;
+  color: red;
+  font-size: 0.8em;
+}
 
 .add-photo-icon{
   font-size: 7.5em;
   color: #B9C5CC ;
 }
 
-#add-photo{
+#image{
   
   display: none;
 }
@@ -527,6 +536,26 @@ footer nav ul {
   cursor: pointer;
 }
 
+.title-container, .category-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap:10px;
+}
+
+.title-label, .category-label{
+  font-weight: 400;
+}
+
+#title, #category{
+  border: none;
+  height: 45px;
+  box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+}
+
+button:disabled{
+  background-color:#A7A7A7;
+}
 .add-photo-rules{
   
   font-size: 1em;
