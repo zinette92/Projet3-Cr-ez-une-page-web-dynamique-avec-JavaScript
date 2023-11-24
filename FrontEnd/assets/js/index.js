@@ -5,7 +5,6 @@
 export async function getCategories() {
   const response = await fetch("http://localhost:5678/api/categories");
   const categories = await response.json();
-  // console.log(categories);
   return categories;
 }
 

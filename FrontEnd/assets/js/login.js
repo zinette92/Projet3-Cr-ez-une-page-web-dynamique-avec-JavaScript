@@ -1,21 +1,30 @@
 const loginForm = document.querySelector("#login form");
 
+//Here we add a listener to detect when the login form is submit
+
 loginForm.addEventListener("submit", (event) => {
+  
+  //Prevent browser refreshing
   event.preventDefault();
+
+  //We are creating an array which contains the login information
 
   const loginInformation = {
     email: event.target.querySelector("[name=email]").value,
     password: event.target.querySelector("[name=password]").value,
   };
 
+  //We are converting the login information array into a string following the JSON notation
+
   const loginData = JSON.stringify(loginInformation);
   const wrongPwd = document.querySelector(".pwd-wrong");
-  const test = 18;
+
+  //Here it is the HTTP request to the server with login information
 
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
     headers: {
-      "accept": "application/json",
+      accept: "application/json",
       "Content-Type": "application/json",
     },
     body: loginData,
@@ -39,4 +48,3 @@ loginForm.addEventListener("submit", (event) => {
       wrongPwd.innerHTML = "Erreur dans l'identifiant ou le mot de passe.";
     });
 });
-
