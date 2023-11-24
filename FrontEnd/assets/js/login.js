@@ -15,7 +15,7 @@ loginForm.addEventListener("submit", (event) => {
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
     headers: {
-      accept: "application/json",
+      "accept": "application/json",
       "Content-Type": "application/json",
     },
     body: loginData,
