@@ -1,19 +1,16 @@
 import { getWorks } from "./index.js";
 import { getCategories } from "./index.js";
 
-// const { categories } = require("./models");
 const gallery = document.querySelector(".gallery");
-const portfolioHeader = document.createElement("div");
-const filtersContainer = document.createElement("div");
 const filtersList = document.createElement("ul");
 const portfolio = document.querySelector("#portfolio");
-
 
 /**
  * This function generate the portfolio title and the anchor to open the modal.
  */
 
 function generatePortfolioHeader() {
+  const portfolioHeader = document.createElement("div");
   portfolioHeader.classList.add("portfolio-header");
   portfolioHeader.innerHTML = `<div class ="portfolio-header-container">
            <h2>Mes Projets</h2>
@@ -30,6 +27,7 @@ function generatePortfolioHeader() {
  */
 
 function generateFilters() {
+  const filtersContainer = document.createElement("div");
   filtersContainer.classList.add("filters");
   getCategories()
     .then((categories) => {
@@ -63,7 +61,6 @@ function generateAllFilter() {
   filtersList.appendChild(filter);
 }
 
-
 /**
  * This function apply the filter selected.
  *
@@ -86,7 +83,7 @@ function displayWorks(filterId) {
         imgCaption.innerHTML = work.title;
         workContainer.appendChild(imgWork);
         workContainer.appendChild(imgCaption);
-        document.querySelector(".gallery").appendChild(workContainer);
+        gallery.appendChild(workContainer);
       });
     })
     .catch((error) => {
@@ -99,15 +96,13 @@ function displayWorks(filterId) {
  */
 
 function removeWorks() {
-  document.querySelector(".gallery").innerHTML = "";
+  gallery.innerHTML = "";
 }
-
-
 
 /**
  * This function add an event listener for each filter.
  *
- *  @param {li} filter The <li> element.
+ *  @param {li} filter The <li> HTML element.
  */
 
 function filterDetection(filter) {
@@ -119,7 +114,6 @@ function filterDetection(filter) {
       event.target.classList.add("selected");
       removeWorks();
       displayWorks(parseInt(event.target.dataset.id));
-      // console.log("ok");
     }
   });
 }
