@@ -51,7 +51,6 @@ function generateModal() {
   );
 }
 
-
 function modalOption(modalId) {
   const modalContent = document.querySelector(".modal-content");
   const seperationLine = document.querySelector(".separation-content-button");
@@ -63,7 +62,7 @@ function modalOption(modalId) {
     backModalArrow.classList.add("back-modal-hide");
     modalTitle.innerHTML = "Galerie photos";
     modalBtn.innerHTML = "Ajouter une photo";
-    modalBtn.value ="add-photo"
+    modalBtn.value = "add-photo";
 
     const deletableWorksContainer = document.createElement("div");
     deletableWorksContainer.classList.add("deletable-works-container");
@@ -78,12 +77,12 @@ function modalOption(modalId) {
     backModalArrow.classList.remove("back-modal-hide");
     modalTitle.innerHTML = "Ajout photo";
     modalBtn.innerHTML = "Valider";
-    modalBtn.value ="submit-photo"
+    modalBtn.value = "submit-photo";
 
     const addPhotoForm = document.createElement("form");
     addPhotoForm.id = "work-form";
     addPhotoForm.setAttribute.method = "post";
-    addPhotoForm.enctype = "multipart/form-data"
+    addPhotoForm.enctype = "multipart/form-data";
     addPhotoForm.classList.add("add-photo-form");
     displayFormAddPhoto(addPhotoForm);
     submitFormListener(addPhotoForm);
@@ -91,7 +90,6 @@ function modalOption(modalId) {
     modalBtn.setAttribute("type", "submit");
     modalBtn.setAttribute("form", "work-form");
     modalButtonListener(modalBtn);
-
   }
 }
 
@@ -232,7 +230,7 @@ function removeAWork(target) {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        "Authorization" : `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => {
@@ -250,11 +248,38 @@ function removeAWork(target) {
   });
 }
 
+
+function addAWork()
+{
+  getWorks()
+    .then((works) => {
+      works.forEach((work) => {
+      
+      const isExist =  document.querySelector(`[data-work-id="${work.id}"]`);
+         
+      if(!isExist)
+        { const workContainer = document.createElement("figure");
+         const imgWork = document.createElement("img");
+         const imgCaption = document.createElement("figcaption");
+         workContainer.dataset.workId = work.id;
+       imgWork.src = work.imageUrl;
+         imgWork.alt = work.title;
+         imgCaption.innerHTML = work.title;
+         workContainer.appendChild(imgWork);
+         workContainer.appendChild(imgCaption);
+         document.querySelector(".gallery").appendChild(workContainer);}
+            });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 function modalButtonListener(target) {
   target.addEventListener("click", () => {
-    if(target.value === "add-photo")
-    {
-    modalOption(2);}
+    if (target.value === "add-photo") {
+      modalOption(2);
+    }
     // else
     // {
     //   target.removeAttribute("type");
@@ -283,20 +308,24 @@ function submitFormListener(target) {
     // formData.append("image", image.files.item(0));
     // formData.append("title", title.value);
     // formData.append("category", category.selectedIndex);
-    
-    console.log(...formData);
 
+    console.log(...formData);
 
     fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: formData,
     })
       .then((res) => {
         if (!res.ok) {
           throw new Error();
+        }
+        else
+        {
+          clearModal2();
+          addAWork();
         }
         // } else {
         //   return response.json();
@@ -318,16 +347,22 @@ function submitFormListener(target) {
 
 function backModalListener(target) {
   target.addEventListener("click", () => {
-    const modalBtn = document.querySelector(".modal-btn");
-    document.querySelector(".add-photo-form").remove();
-
-    modalBtn.removeAttribute("type");
-    modalBtn.removeAttribute("form");
-    if (modalBtn.disabled) {
-      modalBtn.disabled = false;
-    }
-    modalOption(1);
+    clearModal2();
   });
+}
+
+
+function clearModal2()
+{
+  const modalBtn = document.querySelector(".modal-btn");
+  document.querySelector(".add-photo-form").remove();
+
+  modalBtn.removeAttribute("type");
+  modalBtn.removeAttribute("form");
+  if (modalBtn.disabled) {
+    modalBtn.disabled = false;
+  }
+  modalOption(1);
 }
 
 function photoUploadedListener(target) {
@@ -428,5 +463,6 @@ function areFieldsFilled() {
     }
   }
 }
+
 
 openModal();
