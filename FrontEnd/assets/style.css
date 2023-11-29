@@ -495,7 +495,7 @@ footer nav ul {
 
 .add-photo-after-upload {
   object-fit: cover;
-  width: auto;
+  width: 150px;
   height: 100%;
   max-width: 100%;
   display: none;
@@ -556,10 +556,4 @@ button:disabled {
 .add-photo-rules {
   font-size: 1em;
   font-weight: 400;
-}
-
-@media (max-width: 1024px) {
-}
-
-@media (max-width: 767.98px) {
 }

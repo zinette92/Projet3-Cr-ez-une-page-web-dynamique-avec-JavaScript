@@ -3,11 +3,9 @@ import { getCategories } from "./index.js";
 
 const updatePortoflio = document.querySelector(".update-portfolio");
 
-
 /**
  * This function will create the main structure of the modal.
  */
-
 
 function createModalStructure() {
   //Creation of the modal
@@ -56,11 +54,10 @@ function createModalStructure() {
  * This function will generate the content of the modal.
  *
  * @param {number} modalId This the value to choose the modal content that you want
- * 
+ *
  * 1  - Interface to remove the works wanted
  * !1 - Form to submit a new work
  */
-
 
 function modalOption(modalId) {
   const modalContent = document.querySelector(".modal-content");
@@ -70,7 +67,6 @@ function modalOption(modalId) {
   const modalBtn = document.querySelector(".modal-btn");
 
   if (modalId == 1) {
-
     //We are updating the title and buttons texts
     backModalArrow.classList.add("back-modal-hide");
     modalTitle.innerHTML = "Galerie photos";
@@ -85,7 +81,6 @@ function modalOption(modalId) {
     modalContent.insertBefore(deletableWorksContainer, seperationLine);
     addPhotoButtonListener(modalBtn);
   } else {
-
     //We are removing previous modal content and updating title and button value
     document.querySelector(".deletable-works-container").remove();
     backModalArrow.classList.remove("back-modal-hide");
@@ -113,7 +108,6 @@ function modalOption(modalId) {
  *
  * @param {div} worksContainer  The div which contains all deletable works.
  */
-
 
 function displayDeletableWorks(worksContainer) {
   getWorks()
@@ -150,16 +144,14 @@ function displayDeletableWorks(worksContainer) {
  * This function will display the form to submit a work.
  *
  * @param {form} formContainer  The form which 3 fields.
- * 
+ *
  * Image - file, type/accept: png,jpg, max size: 4mb
  * Title - string
  * Category - option
  */
 
-
 function displayFormAddPhoto(formContainer) {
-
-  //Creation of the image field frame 
+  //Creation of the image field frame
 
   const addPhotoFrame = document.createElement("div");
   addPhotoFrame.classList.add("add-photo-frame");
@@ -183,8 +175,6 @@ function displayFormAddPhoto(formContainer) {
   const addPhotoAfterUpload = document.createElement("img");
   addPhotoAfterUpload.setAttribute("alt", "Preview de votre photo");
   addPhotoAfterUpload.classList.add("add-photo-after-upload");
-
-  
 
   //Creation of the title field
 
@@ -218,8 +208,7 @@ function displayFormAddPhoto(formContainer) {
   selectCategoryContainer.appendChild(selectCategoryField);
   categorySelectedListener(selectCategoryField);
 
- 
- //The submit button is disabled until that all fields are correctly filled
+  //The submit button is disabled until that all fields are correctly filled
 
   document.querySelector(".modal-btn").disabled = "true";
 
@@ -241,7 +230,6 @@ function displayFormAddPhoto(formContainer) {
  *
  * @param {a} target It represents the trash icon link to the work targeted.
  */
-
 
 function removeAWork(target) {
   target.addEventListener("click", () => {
@@ -277,7 +265,6 @@ function addNewWorkGallery() {
   getWorks()
     .then((works) => {
       works.forEach((work) => {
-
         //We are displaying only the new work added.
         const isExist = document.querySelector(`[data-work-id="${work.id}"]`);
 
@@ -307,7 +294,6 @@ function addNewWorkGallery() {
  */
 
 function fillCategoryField(selectCategory) {
-
   //Creation of a blank as a default option
   const blankOption = document.createElement("option");
   blankOption.value = "category.name";
@@ -315,7 +301,8 @@ function fillCategoryField(selectCategory) {
 
   //Generation of select option
 
-  selectCategory.appendChild(blankOption);  getCategories()
+  selectCategory.appendChild(blankOption);
+  getCategories()
     .then((categories) => {
       categories.forEach((category) => {
         const categoryName = document.createElement("option");
@@ -341,7 +328,11 @@ function areFieldsFilled() {
 
   //We are checking if the file field has en element, If isn't empty after removing space and If the category selected isn't the default one.
 
-  if (image.files.length !== 0 && title.value.trim() !== "" && category.selectedIndex !== 0) {
+  if (
+    image.files.length !== 0 &&
+    title.value.trim() !== "" &&
+    category.selectedIndex !== 0
+  ) {
     submitBtn.disabled = false;
   } else {
     if (!submitBtn.disabled) {
@@ -417,7 +408,7 @@ function closeModalListener(closeModalBtn, modal) {
 
 function addPhotoButtonListener(btnAddPhoto) {
   btnAddPhoto.addEventListener("click", () => {
-    //We are checking if we are in the first modal or not. If so we are opening the second modal.    
+    //We are checking if we are in the first modal or not. If so we are opening the second modal.
     if (btnAddPhoto.value === "add-photo") {
       modalOption(2);
     }
@@ -438,10 +429,10 @@ function backModalListener(arrow) {
 
 /**
  * This function will detect a change in the input file. If there is a change the image will be uploaded if it respect these 2 conditions:
- * 
+ *
  * 1 - Size < 4mb
  * 2 - extension is png or jpg
- * 
+ *
  * If the image is accepted, we have to check if others fields are filled to enabled the submit button.
  *
  *  @param {inputImage} input It represents the image field.
@@ -450,7 +441,6 @@ function backModalListener(arrow) {
 function photoUploadedListener(inputImage) {
   inputImage.addEventListener("change", () => {
     if (inputImage.files.length > 0) {
-
       //We are convertion the image size in mb
 
       const fileSize = inputImage.files.item(0).size;
@@ -458,7 +448,10 @@ function photoUploadedListener(inputImage) {
 
       //If the file has a size < 4mb and the extension is png or jpg we can accept it.
 
-      if (fileMb < 4 && getImageExtension(inputImage.files.item(0).name) === 1) {
+      if (
+        fileMb < 4 &&
+        getImageExtension(inputImage.files.item(0).name) === 1
+      ) {
         if (document.querySelector(".upload-photo-error")) {
           document.querySelector(".upload-photo-error").remove();
         }
@@ -500,7 +493,6 @@ function titleUpdatedListener(field) {
  *  @param {select} field It represents the category select HTML element.
  */
 
-
 function categorySelectedListener(field) {
   field.addEventListener("change", () => {
     areFieldsFilled();
@@ -508,11 +500,10 @@ function categorySelectedListener(field) {
 }
 
 /**
- * This function detect the submission of the work. 
+ * This function detect the submission of the work.
  *
  *  @param {form} form It represents the form to submit a new work.
  */
-
 
 function submitFormListener(form) {
   form.addEventListener("submit", (event) => {
@@ -543,7 +534,6 @@ function submitFormListener(form) {
       });
   });
 }
-
 
 //Add a listener to the "modifier" link.
 
