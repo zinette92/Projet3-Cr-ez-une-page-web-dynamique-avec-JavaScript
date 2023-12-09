@@ -92,7 +92,7 @@ function displayWorks(filterId) {
 }
 
 /**
- * This function allows to remove all visible works.
+ * This function allows to remove all visible works when a filter is selected.
  */
 
 function removeWorks() {

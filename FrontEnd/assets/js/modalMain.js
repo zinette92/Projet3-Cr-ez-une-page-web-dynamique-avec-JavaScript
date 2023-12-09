@@ -1,4 +1,4 @@
-import { modalRemovePhoto } from "./modalRemovePhoto.js";
+import { modalDisplayGallery } from "./modalDisplayGallery.js";
 import { clearModalAddPhoto } from "./modalAddPhoto.js";
 
 /**
@@ -11,7 +11,6 @@ function createModalStructure() {
   modal.classList.add("modal");
 
   //Creation of the modal content container
-
   const modalContent = document.createElement("div");
   modalContent.classList.add("modal-content");
 
@@ -20,13 +19,13 @@ function createModalStructure() {
   modalHeader.classList.add("modal-header");
   const backModalArrow = document.createElement("span");
   backModalArrow.classList.add("fa-solid", "fa-arrow-left", "back-modal");
-  // backModalListener(backModalArrow);
+
+  //Creation of the cross to close the modal
   const closeModalCross = document.createElement("span");
   closeModalCross.classList.add("modal-header", "close-modal");
   closeModalCross.innerHTML = "&times;";
 
   //Modal title, decoration and button
-
   const modalTitle = document.createElement("p");
   modalTitle.classList.add("modal-title");
   const separationContentButton = document.createElement("span");
@@ -35,7 +34,6 @@ function createModalStructure() {
   addPhotoBtn.classList.add("modal-btn");
 
   //Integration of the modal in the DOM
-
   modalHeader.appendChild(backModalArrow);
   modalHeader.appendChild(closeModalCross);
   modalContent.appendChild(modalHeader);
@@ -45,23 +43,23 @@ function createModalStructure() {
   modal.appendChild(modalContent);
   document.body.appendChild(modal);
 
-  return closeModalCross;
 }
 
 /**
- * This function will assign a listener to detect a click: inside the modal, outside the modal and on back arrow.
- * It will as well generate the modal "Remove Photo".
+ * This function will create the modal structure and assign it a listener to detect when the user wants to close it.
+ * It will as well generate the modal "Display Gallery".
  */
 
-function openModalListener() {
+function openModaListener() {
   document.querySelector(".update-portfolio").addEventListener("click", () => {
+    createModalStructure();
     closeModalListener(
-      createModalStructure(),
+      document.querySelector(".close-modal"),
       document.querySelector(".modal")
     );
-    backModalListener(document.querySelector(".back-modal"));
-    modalRemovePhoto(false);
+     backModalListener(document.querySelector(".back-modal"));
     document.querySelector(".modal").style.display = "block";
+    modalDisplayGallery("notHidden");
   });
 }
 
@@ -97,5 +95,4 @@ function backModalListener(arrow) {
 }
 
 //Add a listener to detect a click on the "modifier" link.
-
-openModalListener();
+openModaListener();

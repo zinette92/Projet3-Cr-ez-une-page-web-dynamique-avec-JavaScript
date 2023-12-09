@@ -1,5 +1,5 @@
 import { getCategories } from "./index.js";
-import { modalRemovePhoto, createFrameDeletableWork,} from "./modalRemovePhoto.js";
+import { modalDisplayGallery, generateWorks } from "./modalDisplayGallery.js";
 
 /**
  * This function will create the modal "Add Photo".
@@ -20,13 +20,12 @@ export function modalAddPhoto() {
   modalBtn.value = "submit-photo";
 
   //Creation and insertion of the form to submit a work
-
   const addPhotoForm = document.createElement("form");
   addPhotoForm.id = "work-form";
   addPhotoForm.setAttribute.method = "post";
   addPhotoForm.enctype = "multipart/form-data";
   addPhotoForm.classList.add("add-photo-form");
-  creationFormAddPhoto(addPhotoForm);
+  generateForm(addPhotoForm);
   submitFormListener(addPhotoForm);
   modalContent.insertBefore(addPhotoForm, seperationLine);
   modalBtn.setAttribute("type", "submit");
@@ -43,15 +42,12 @@ export function modalAddPhoto() {
  * Category - option
  */
 
-function creationFormAddPhoto(formContainer) {
-  
-    //Creation of the add photo form
-
+function generateForm(formContainer) {
+  //Creation of the add photo form
   const addPhotoFrame = document.createElement("div");
   addPhotoFrame.classList.add("add-photo-frame");
-  
+
   //Creation of the photo field
-  
   const addPhotoBeforeUpload = document.createElement("div");
   addPhotoBeforeUpload.classList.add("add-photo-before-upload");
   const addPhotoIcon = document.createElement("i");
@@ -74,7 +70,6 @@ function creationFormAddPhoto(formContainer) {
   addPhotoAfterUpload.classList.add("add-photo-after-upload");
 
   //Creation of the title field
-
   const addTitleContainer = document.createElement("div");
   addTitleContainer.classList.add("title-container");
   const addTitleLabel = document.createElement("label");
@@ -90,7 +85,6 @@ function creationFormAddPhoto(formContainer) {
   titleUpdatedListener(addTitleField);
 
   //Creation of the category field
-
   const selectCategoryContainer = document.createElement("div");
   selectCategoryContainer.classList.add("category-container");
   const selectCategoryLabel = document.createElement("label");
@@ -101,16 +95,14 @@ function creationFormAddPhoto(formContainer) {
   const selectCategoryField = document.createElement("select");
   selectCategoryField.setAttribute("id", "category");
   selectCategoryField.setAttribute("name", "category");
-  fillCategoryField(selectCategoryField);
+  displayCategoryOptions(selectCategoryField);
   selectCategoryContainer.appendChild(selectCategoryField);
   categorySelectedListener(selectCategoryField);
 
   //The submit button is disabled until that all fields are correctly filled
-
   document.querySelector(".modal-btn").disabled = "true";
 
   //Insertion of the form in the DOM
-
   addPhotoBeforeUpload.appendChild(addPhotoIcon);
   addPhotoBeforeUpload.appendChild(addPhotoLabel);
   addPhotoBeforeUpload.appendChild(addPhotoField);
@@ -126,7 +118,7 @@ function creationFormAddPhoto(formContainer) {
  * This function will display the work added in the gallery.
  */
 
-function addNewWorkGallery(work) {
+function refreshGallery(work) {
   const workContainer = document.createElement("figure");
   const imgWork = document.createElement("img");
   const imgCaption = document.createElement("figcaption");
@@ -153,7 +145,7 @@ export function clearModalAddPhoto() {
     modalBtn.disabled = false;
   }
   document.querySelector(".deletable-works-container").style.display = null;
-  modalRemovePhoto(true);
+  modalDisplayGallery("hidden");
 }
 
 /**
@@ -162,7 +154,7 @@ export function clearModalAddPhoto() {
  * @param {select} inputCategory It represents the category field
  */
 
-function fillCategoryField(selectCategory) {
+function displayCategoryOptions(selectCategory) {
   //Creation of a blank as a default option
   const blankOption = document.createElement("option");
   blankOption.value = "category.name";
@@ -188,17 +180,18 @@ function fillCategoryField(selectCategory) {
 /**
  * This function allows to check if the fields are correctly filled, If so, the submit button will be enabled and the user will be able to submit the work.
  */
-
-function areFieldsFilled() {
+function checkFormValidity() {
   const image = document.getElementById("image");
   const title = document.getElementById("title");
   const category = document.getElementById("category");
   const submitBtn = document.querySelector(".modal-btn");
 
   //We are checking if the file field has en element, If isn't empty after removing space and If the category selected isn't the default one.
-
-  if (image.files.length !== 0 && title.value.trim() !== ""  &&category.selectedIndex !== 0) 
-  {
+  if (
+    image.files.length !== 0 &&
+    title.value.trim() !== "" &&
+    category.selectedIndex !== 0
+  ) {
     submitBtn.disabled = false;
   } else {
     if (!submitBtn.disabled) {
@@ -217,30 +210,6 @@ function getImageExtension(imgSrc) {
   } else {
     return 0;
   }
-}
-
-/**
- * This function will detect a change in the title field. It will as well check if all fields are filled. If so we enabled the submit button.
- *
- *  @param {input} field It represents the title field.
- */
-
-function titleUpdatedListener(field) {
-  field.addEventListener("input", () => {
-    areFieldsFilled();
-  });
-}
-
-/**
- * This function will detect a change in the select category field. It will as well check if all fields are filled. If so we enabled the submit button.
- *
- *  @param {select} field It represents the category select HTML element.
- */
-
-function categorySelectedListener(field) {
-  field.addEventListener("change", () => {
-    areFieldsFilled();
-  });
 }
 
 /**
@@ -264,8 +233,10 @@ function photoUploadedListener(inputImage) {
 
       //If the file has a size < 4mb and the extension is png or jpg we can accept it.
 
-      if (fileMb < 4 && getImageExtension(inputImage.files.item(0).name) === 1) 
-      {
+      if (
+        fileMb < 4 &&
+        getImageExtension(inputImage.files.item(0).name) === 1
+      ) {
         if (document.querySelector(".upload-photo-error")) {
           document.querySelector(".upload-photo-error").remove();
         }
@@ -275,7 +246,7 @@ function photoUploadedListener(inputImage) {
           URL.createObjectURL(inputImage.files.item(0));
         document.querySelector(".add-photo-after-upload").style.display =
           "block";
-        areFieldsFilled();
+        checkFormValidity();
       } else {
         const errorMsg = document.createElement("p");
         errorMsg.classList.add("upload-photo-error");
@@ -290,6 +261,30 @@ function photoUploadedListener(inputImage) {
 }
 
 /**
+ * This function will detect a change in the title field. It will as well check if all fields are filled. If so we enabled the submit button.
+ *
+ *  @param {input} field It represents the title field.
+ */
+
+function titleUpdatedListener(field) {
+  field.addEventListener("input", () => {
+    checkFormValidity();
+  });
+}
+
+/**
+ * This function will detect a change in the select category field. It will as well check if all fields are filled. If so we enabled the submit button.
+ *
+ *  @param {select} field It represents the category select HTML element.
+ */
+
+function categorySelectedListener(field) {
+  field.addEventListener("change", () => {
+    checkFormValidity();
+  });
+}
+
+/**
  * This function detect the submission of the work.
  *
  *  @param {form} form It represents the form to submit a new work.
@@ -300,7 +295,6 @@ function submitFormListener(form) {
     event.preventDefault();
 
     //Creation of a formData object to upload our 3 fields
-
     const formData = new FormData(form);
 
     fetch("http://localhost:5678/api/works", {
@@ -310,18 +304,17 @@ function submitFormListener(form) {
       },
       body: formData,
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         if (data === undefined) {
           throw new Error("Erreur lors de la soumission du travail");
-        } else {
-          console.log(data);
-          document
-            .querySelector(".deletable-works-container")
-            .appendChild(createFrameDeletableWork(data));
-          clearModalAddPhoto();
-          addNewWorkGallery(data);
         }
+
+        document
+          .querySelector(".deletable-works-container")
+          .appendChild(generateWorks(data));
+        clearModalAddPhoto();
+        refreshGallery(data);
       })
       .catch((error) => {
         console.log(error);

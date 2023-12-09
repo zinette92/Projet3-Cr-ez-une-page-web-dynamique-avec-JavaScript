@@ -8,19 +8,16 @@ loginForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   //We are creating an array which contains the login information
-
   const loginInformation = {
     email: event.target.querySelector("[name=email]").value,
     password: event.target.querySelector("[name=password]").value,
   };
 
   //We are converting the login information array into a string following the JSON notation
-
   const loginData = JSON.stringify(loginInformation);
   const wrongPwd = document.querySelector(".pwd-wrong");
 
   //Here it is the HTTP request to the server with login information
-
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
     headers: {
@@ -29,14 +26,13 @@ loginForm.addEventListener("submit", (event) => {
     },
     body: loginData,
   })
-    .then(response => {
+    .then((response) => {
       if (response.status !== 200) {
-        throw new Error();
-      } else {
-        return response.json();
+        throw new Error("Une erreur s'est produite lors de l'authentification");
       }
+      return response.json();
     })
-    .then(data => {
+    .then((data) => {
       if (wrongPwd.textContent !== "") {
         wrongPwd.innerHTML = "";
       }
@@ -44,7 +40,8 @@ loginForm.addEventListener("submit", (event) => {
       window.localStorage.setItem("token", data.token);
       window.location.href = "index.html";
     })
-    .catch(() => {
+    .catch((error) => {
+      console.log(error);
       wrongPwd.innerHTML = "Erreur dans l'identifiant ou le mot de passe.";
     });
 });

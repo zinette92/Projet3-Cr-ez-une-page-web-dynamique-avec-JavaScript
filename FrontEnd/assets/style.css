@@ -406,7 +406,7 @@ footer nav ul {
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  max-width: 85%;
+  width: 85%;
   height: 70%;
   align-self: center;
   margin-top: 60px;

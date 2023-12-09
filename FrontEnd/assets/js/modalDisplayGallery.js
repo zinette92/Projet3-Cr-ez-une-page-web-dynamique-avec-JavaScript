@@ -2,10 +2,12 @@ import { getWorks } from "./index.js";
 import { modalAddPhoto } from "./modalAddPhoto.js";
 
 /**
- * This function will create the modal "Remove Photo".
+ * This function will create the modal which contains all works available in the gallery.
+ *
+ * @param {state} string  This information allows us to know if the modal is hidden or not.
  */
 
-export function modalRemovePhoto(isHidden) {
+export function modalDisplayGallery(state) {
   const modalContent = document.querySelector(".modal-content");
   const seperationLine = document.querySelector(".separation-content-button");
   const backModalArrow = document.querySelector(".back-modal");
@@ -19,23 +21,22 @@ export function modalRemovePhoto(isHidden) {
   modalBtn.value = "add-photo";
 
   //Creation and insertion in the DOM of the div which will contains all works only the first time.
-
-  if (isHidden === false) {
+  if (state === "notHidden") {
     const deletableWorksContainer = document.createElement("div");
     deletableWorksContainer.classList.add("deletable-works-container");
-    displayDeletableWorks();
+    displayWorks();
     modalContent.insertBefore(deletableWorksContainer, seperationLine);
-    addPhotoButtonListener(modalBtn);
+    openModalDisplayGallery(modalBtn);
   }
 }
 
 /**
- * This will create a figure which contain the work image and a trash icon to remove this work.
+ * This will create a figure which contain an image of the work and a trash icon.
  *
  * @param {work} object  This object contains all informtion of this work.
  */
 
-export function createFrameDeletableWork(work) {
+export function generateWorks(work) {
   const deletetableWorkContainer = document.createElement("figure");
   const deletableWork = document.createElement("img");
   const deleteIconContainer = document.createElement("a");
@@ -50,23 +51,21 @@ export function createFrameDeletableWork(work) {
   deleteIconContainer.appendChild(deleteIcon);
   deletetableWorkContainer.appendChild(deletableWork);
   deletetableWorkContainer.appendChild(deleteIconContainer);
-  removeAWork(deleteIconContainer);
+  removeWorkRequest(deleteIconContainer);
   return deletetableWorkContainer;
 }
 
 /**
  * This function will display all works found in the database.
- *
- * @param {div} worksContainer  The div which contains all deletable works.
  */
 
-function displayDeletableWorks() {
+function displayWorks() {
   getWorks()
     .then((worksList) => {
       worksList.forEach((work) => {
         document
           .querySelector(".deletable-works-container")
-          .appendChild(createFrameDeletableWork(work));
+          .appendChild(generateWorks(work));
       });
     })
     .catch((error) => {
@@ -80,7 +79,7 @@ function displayDeletableWorks() {
  * @param {a} target It represents the trash icon link to the work targeted.
  */
 
-function removeAWork(target) {
+function removeWorkRequest(target) {
   target.addEventListener("click", () => {
     const workToRemoveId = target.getAttribute("data-removed-work-id");
 
@@ -91,13 +90,13 @@ function removeAWork(target) {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) {
           throw new Error("Erreur lors de la suppression des données");
-        } else {
-          target.parentElement.remove();
-          document.querySelector(`[data-work-id='${workToRemoveId}']`).remove();
         }
+
+        target.parentElement.remove();
+        document.querySelector(`[data-work-id='${workToRemoveId}']`).remove();
       })
       .catch((error) => {
         console.log(error);
@@ -108,14 +107,15 @@ function removeAWork(target) {
 /**
  * This function allows to move from the modal "Remove Photo" to the modal "Add Photo"
  *
- *  @param {button} arrow It represents the button displayed in the first modal.
+ *  @param {btnAddPhoto} arrow It represents the button displayed in the first modal.
  */
 
-function addPhotoButtonListener(btnAddPhoto) {
+function openModalDisplayGallery(btnAddPhoto) {
   btnAddPhoto.addEventListener("click", () => {
     //We are checking if we are in the first modal or not. If so we are opening the second modal.
     if (btnAddPhoto.value === "add-photo") {
-      document.querySelector(".deletable-works-container").style.display = "none";
+      document.querySelector(".deletable-works-container").style.display =
+        "none";
       modalAddPhoto();
     }
   });
