@@ -29,14 +29,14 @@ loginForm.addEventListener("submit", (event) => {
     },
     body: loginData,
   })
-    .then((response) => {
+    .then(response => {
       if (response.status !== 200) {
         throw new Error();
       } else {
         return response.json();
       }
     })
-    .then((data) => {
+    .then(data => {
       if (wrongPwd.textContent !== "") {
         wrongPwd.innerHTML = "";
       }
